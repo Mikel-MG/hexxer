@@ -36,7 +36,7 @@ test "encode_string function returns correct string" {
 }
 
 /// this is the main string-decoding function
-fn decode_string(allocator: std.mem.Allocator, input_str: []u8) ![]u8 {
+fn decode_string(allocator: std.mem.Allocator, input_str: []const u8) ![]u8 {
     // allocate buffer for the output
     var buf = try allocator.alloc(u8, input_str.len / 2);
     var i: u64 = 0;
@@ -45,7 +45,11 @@ fn decode_string(allocator: std.mem.Allocator, input_str: []u8) ![]u8 {
     // we have to transform two hex characters into one printable ascii
     while (i < input_str.len) {
         const hex_tuple = input_str[i .. i + 2];
-        const ascii_char = try decoder.hex2dec(hex_tuple);
+        // hex2dec expects a []u8, not []const u8
+        var temp_buf: [2]u8 = undefined;
+        // we copy the data to mutable memory
+        std.mem.copyForwards(u8, &temp_buf, hex_tuple);
+        const ascii_char = try decoder.hex2dec(&temp_buf);
         // std.debug.print("{any}\n", .{ascii_char});
 
         //WARNING: this feels very unsafe
