@@ -62,7 +62,14 @@ fn decode_string(allocator: std.mem.Allocator, input_str: []const u8) ![]u8 {
     return buf;
 }
 
-//TODO: Add test for the decode_string() function!
+test "decode_string function returns correct string" {
+    const sample_hex_string: []const u8 = "7768617420697320746869733f20616e6f74686572207465737421";
+    const allocator = std.heap.page_allocator;
+    const decoded_string = try decode_string(allocator, sample_hex_string);
+    defer allocator.free(decoded_string);
+    const expected: []const u8 = "what is this? another test!";
+    try std.testing.expect(std.mem.eql(u8, decoded_string, expected));
+}
 
 pub fn main() !void {
     const allocator = std.heap.page_allocator;
