@@ -8,7 +8,7 @@ fn print_usage() void {
 }
 
 /// this is the main string-encoding function
-fn encode_string(allocator: std.mem.Allocator, input_str: []u8) ![]u8 {
+fn encode_string(allocator: std.mem.Allocator, input_str: []const u8) ![]u8 {
     // allocate buffer for the output
     var buf = try allocator.alloc(u8, input_str.len * 2);
 
@@ -27,11 +27,11 @@ fn encode_string(allocator: std.mem.Allocator, input_str: []u8) ![]u8 {
 }
 
 test "encode_string function returns correct string" {
+    const sample_string: []const u8 = "hi this is a test";
     const allocator = std.heap.page_allocator;
-    var sample_string = [_]u8{ 'h', 'i', ' ', 't', 'h', 'i', 's', ' ', 'i', 's', ' ', 'a', ' ', 't', 'e', 's', 't' };
-    const encoded_string = try encode_string(allocator, sample_string[0..]);
+    const encoded_string = try encode_string(allocator, sample_string);
     defer allocator.free(encoded_string);
-    const expected: []const u8 = "6869207468697320697320612074657374"[0..];
+    const expected: []const u8 = "6869207468697320697320612074657374";
     try std.testing.expect(std.mem.eql(u8, encoded_string, expected));
 }
 
@@ -57,6 +57,9 @@ fn decode_string(allocator: std.mem.Allocator, input_str: []u8) ![]u8 {
     // return encoded string
     return buf;
 }
+
+//TODO: Add test for the decode_string() function!
+
 pub fn main() !void {
     const allocator = std.heap.page_allocator;
     const args = try std.process.argsAlloc(allocator);
