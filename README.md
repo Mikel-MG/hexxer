@@ -1,6 +1,6 @@
 # Hexxer
 
-A minimal tool written in Zig to encode and decode ASCII text as hexadecimal.
+A minimal tool written in Zig to encode and decode ASCII text to and from hexadecimal.
 
 The aim of this project is simply to provide a minimal illustrative example of how to implement basic Zig functionality (flow control, imports, testing, allocators...). I am aware that there *much* better (and easier!) ways of implementing such an encoder, but I wanted to explore the language features.
 
@@ -51,7 +51,7 @@ Ah, it is hard to speak of what it was, that savage forest, dense and difficult,
 
 # Limitations
 
-`hexxer` maps ASCII printable characters (character code 32-127) to hexadecimal digits. The numeric range is convenient, because can assume that we need two hexadecimal characters to represent each ASCII character, making parsing very easy. The downside is that using any other characters, such as newline (`\n`), or any non-standard characters, will result in erroneous output or a catastrophic failure.
+`hexxer` maps ASCII printable characters (character code 32-127) to hexadecimal digits. The numeric range is convenient, because we can assume that we need two hexadecimal characters to represent each ASCII character, making parsing very easy. The downside is that using any other characters, such as newline (`\n`), or any non-standard characters, will result in erroneous output or a catastrophic failure.
 
 # Future work
 
